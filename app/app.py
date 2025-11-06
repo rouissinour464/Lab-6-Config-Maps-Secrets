@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request, redirect
 import psycopg2
-
+import os
 app = Flask(__name__)
 
 # Configuration de la connexion PostgreSQL
 DB_CONFIG = {
-    "host": "host.docker.internal",
-    "database": "lab5db",
-    "user": "lab5user",
-    "password": "lab5pass",
-    "port": 5432
+    "host": os.getenv("DB_HOST", "db-service"),     # nom DNS du service PostgreSQL dans K8s
+    "database": os.getenv("DB_NAME", "lab5db"),
+    "user": os.getenv("DB_USER", "lab5user"),
+    "password": os.getenv("DB_PASSWORD", "lab5pass"),
+    "port": int(os.getenv("DB_PORT", 5432))
 }
 
 def get_connection():
